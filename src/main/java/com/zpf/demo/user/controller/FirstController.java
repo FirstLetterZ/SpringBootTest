@@ -1,35 +1,32 @@
-package com.example.test.controller;
+package com.zpf.demo.user.controller;
 
-import com.example.test.been.TestBean;
+import com.zpf.demo.user.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import netscape.javascript.JSObject;
 
 /**
  * Created by ZPF on 2019/6/4.
  */
 @RestController
 class FirstController {
-    private final TestBean testBean;
 
     @Autowired
-    public FirstController(TestBean testBean) {
-        this.testBean = testBean;
-    }
+    private UserRepository userRepository;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String sayHello() {
-        return "Hello World!" + testBean.toString();
+        return "Hello World!";
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.POST)
-    public String update(@RequestBody TestBean bean) {
-        return "Hello World!" + testBean.toString();
+    public String update(@RequestBody JSObject bean) {
+        return "Hello World!";
     }
 
 }
