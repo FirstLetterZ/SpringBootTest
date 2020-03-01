@@ -1,31 +1,40 @@
 package com.zpf.demo.user.been;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by ZPF on 2019/6/5.
  */
 @MappedSuperclass
-public class UserBaseInfo {
+public class UserBaseInfo implements Serializable {
 
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String account;
+    private String usrId = null;
 
-    private String password;
+    private String account = null;
 
-    private String nickname;
+    private String password = null;
 
-    public Integer getId() {
+    private String nickname = null;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsrId() {
+        return usrId;
+    }
+
+    public void setUsrId(String usrId) {
+        this.usrId = usrId;
     }
 
     public String getAccount() {

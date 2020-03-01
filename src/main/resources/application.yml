@@ -1,14 +1,26 @@
 server:
   port: 8081
   servlet:
-    context-path: /demo
+    context-path: /test
+debug: true
 spring:
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+  freemarker:
+    cache: false    #页面不加载缓存，修改即时生效
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/test_db?serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/test_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: 123456
+    password: 12345678
   jpa:
     hibernate:
       ddl-auto: create
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  redis:
+    host: 127.0.0.1
+    port: 6379

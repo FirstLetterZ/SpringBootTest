@@ -2,6 +2,7 @@ package com.zpf.demo.user.repository;
 
 
 import com.zpf.demo.user.been.UserPersonalInfo;
+import com.zpf.demo.user.been.UserTimeInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface UserRepository extends JpaRepository<UserPersonalInfo, Long> {
+public interface UserTimeRepository extends JpaRepository<UserTimeInfo, Long> {
 }

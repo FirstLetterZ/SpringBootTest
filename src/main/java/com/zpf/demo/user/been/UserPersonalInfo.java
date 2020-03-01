@@ -1,24 +1,20 @@
 package com.zpf.demo.user.been;
 
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 /**
  * Created by ZPF on 2019/6/5.
  */
-@MappedSuperclass
+
+@Entity
+@Table
 public class UserPersonalInfo extends UserBaseInfo {
-
-    private String realName;//
-
-    private String sex;
-
-    private Integer age;
-
-    private String email;
-
-    private String phone;
-
-    private String sdf;//个性签名
+    private String realName = null;//
+    private String sex = null;
+    private Integer age = null;
+    private String email = null;
+    private String phone = null;
+    private String sdf = null;//个性签名
 
     public String getRealName() {
         return realName;
