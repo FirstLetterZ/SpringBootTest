@@ -1,13 +1,11 @@
 package com.zpf.demo.user.been;
 
-import javax.persistence.*;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * Created by ZPF on 2019/6/5.
  */
-
-@Entity
-@Table
+@TableName(value = "user_personal_info")
 public class UserPersonalInfo extends UserBaseInfo {
     private String realName = null;//
     private String sex = null;

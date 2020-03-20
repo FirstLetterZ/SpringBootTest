@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.zpf.demo.user.filter.UserFilter;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@MapperScan("com.zpf.demo.user.repository")
 public class TestApplication {
     @Bean
     public HttpMessageConverters fastJsonHttpMessageConverters() {
@@ -29,7 +31,7 @@ public class TestApplication {
     public FilterRegistrationBean<UserFilter> userFilter() {
         FilterRegistrationBean<UserFilter> registrationBean=new FilterRegistrationBean<UserFilter>();
         registrationBean.setFilter(new UserFilter());
-        registrationBean.addUrlPatterns("/usr/*");
+        registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
 
@@ -38,5 +40,6 @@ public class TestApplication {
         application.setBannerMode(Banner.Mode.OFF);
         application.run(args);
     }
+
 
 }

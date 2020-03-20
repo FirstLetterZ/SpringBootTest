@@ -1,17 +1,11 @@
 package com.zpf.demo.user.been;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by ZPF on 2019/6/5.
  */
-@MappedSuperclass
 public class UserBaseInfo implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String usrId = null;
 
@@ -20,14 +14,6 @@ public class UserBaseInfo implements Serializable {
     private String password = null;
 
     private String nickname = null;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsrId() {
         return usrId;

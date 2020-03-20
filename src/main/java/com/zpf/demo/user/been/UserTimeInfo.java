@@ -1,19 +1,16 @@
 package com.zpf.demo.user.been;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * Created by ZPF on 2019/6/5.
  */
-@Entity
-@Table(name = "test_time")
+@TableName(value = "UserTimeInfo")
 public class UserTimeInfo {
-    @Id
-    private Long id;
+    private String id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
@@ -27,11 +24,11 @@ public class UserTimeInfo {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date failureTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

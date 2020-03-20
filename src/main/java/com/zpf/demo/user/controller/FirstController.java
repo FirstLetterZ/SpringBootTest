@@ -36,7 +36,12 @@ class FirstController {
 
     @RequestMapping(value = "/initUserInfo", method = RequestMethod.GET)
     public boolean initUserPersonalInfo() {
-        UserPersonalInfo info = new UserPersonalInfo();
+        UserPersonalInfo info = userDataService.findLastUser();
+        if (info == null) {
+            info = new UserPersonalInfo();
+        } else {
+            return true;
+        }
         info.setRealName("真名");
         info.setAge(18);
         info.setNickname("别名");
