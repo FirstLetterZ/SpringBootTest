@@ -11,6 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @SpringBootApplication
 @MapperScan("com.zpf.demo.user.repository")
@@ -24,12 +28,13 @@ public class TestApplication {
         fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
         //3、在convert中添加配置信息.
         fastConverter.setFastJsonConfig(fastJsonConfig);
+        fastConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));
         return new HttpMessageConverters(fastConverter);
     }
 
     @Bean
     public FilterRegistrationBean<UserFilter> userFilter() {
-        FilterRegistrationBean<UserFilter> registrationBean=new FilterRegistrationBean<UserFilter>();
+        FilterRegistrationBean<UserFilter> registrationBean = new FilterRegistrationBean<UserFilter>();
         registrationBean.setFilter(new UserFilter());
         registrationBean.addUrlPatterns("/*");
         return registrationBean;

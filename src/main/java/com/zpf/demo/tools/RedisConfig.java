@@ -1,4 +1,4 @@
-package com.zpf.demo.user.config;
+package com.zpf.demo.tools;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

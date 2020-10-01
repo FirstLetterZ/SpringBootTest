@@ -1,18 +1,83 @@
 package com.zpf.demo.user.been;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.zpf.demo.user.entity.UserBaseEntity;
+import com.zpf.demo.user.entity.UserExpendEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * Created by ZPF on 2019/6/5.
- */
-@TableName(value = "user_personal_info")
-public class UserPersonalInfo extends UserBaseInfo {
+import java.util.Date;
+
+public class UserPersonalInfo {
+    private String usrId = null;
+    private String account = null;
+    private String nickname = null;
     private String realName = null;//
-    private String sex = null;
-    private Integer age = null;
+    private String sexStr = null;
+    private int sexType = 0;
+    private int age = 0;
     private String email = null;
     private String phone = null;
     private String sdf = null;//个性签名
+    private int accountState = 0;
+    private String remark = null;//备注
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date activeTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date freezingTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date failureTime;
+
+    public void setBaseInfo(UserBaseEntity info) {
+        usrId = info.getUsrId();
+        account = info.getAccount();
+        nickname = info.getNickname();
+        remark = info.getRemark();
+        sexType = info.getSex();
+        if (sexType == 1) {
+            sexStr = "男";
+        } else if (sexType == 2) {
+            sexStr = "女";
+        } else {
+            sexStr = "保密";
+        }
+        age = info.getAge();
+        accountState = info.getAccountState();
+        createTime = info.getCreateTime();
+        activeTime = info.getActiveTime();
+        freezingTime = info.getFreezingTime();
+        failureTime = info.getFailureTime();
+    }
+
+    public void setExpandInfo(UserExpendEntity info) {
+        email = info.getEmail();
+        phone=info.getPhone();
+        sdf=info.getSdf();
+    }
+
+    public String getUsrId() {
+        return usrId;
+    }
+
+    public void setUsrId(String usrId) {
+        this.usrId = usrId;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public String getRealName() {
         return realName;
@@ -22,12 +87,72 @@ public class UserPersonalInfo extends UserBaseInfo {
         this.realName = realName;
     }
 
-    public String getSex() {
-        return sex;
+    public String getSexStr() {
+        return sexStr;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setSexStr(String sexStr) {
+        this.sexStr = sexStr;
+    }
+
+    public int getSexType() {
+        return sexType;
+    }
+
+    public void setSexType(int sexType) {
+        this.sexType = sexType;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(int accountState) {
+        this.accountState = accountState;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getActiveTime() {
+        return activeTime;
+    }
+
+    public void setActiveTime(Date activeTime) {
+        this.activeTime = activeTime;
+    }
+
+    public Date getFreezingTime() {
+        return freezingTime;
+    }
+
+    public void setFreezingTime(Date freezingTime) {
+        this.freezingTime = freezingTime;
+    }
+
+    public Date getFailureTime() {
+        return failureTime;
+    }
+
+    public void setFailureTime(Date failureTime) {
+        this.failureTime = failureTime;
     }
 
     public Integer getAge() {

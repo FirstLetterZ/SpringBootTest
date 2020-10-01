@@ -1,4 +1,4 @@
-package com.zpf.demo.user.util;
+package com.zpf.demo.tools;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
