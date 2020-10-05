@@ -1,13 +1,11 @@
 package com.zpf.demo.user.controller;
 
-import com.zpf.demo.tools.RedisUtil;
 import com.zpf.demo.user.been.UserPersonalInfo;
 import com.zpf.demo.user.been.UserRegisterInfo;
 import com.zpf.demo.user.entity.UserBaseEntity;
 import com.zpf.demo.user.entity.UserExpendEntity;
 import com.zpf.demo.user.service.UserBaseService;
 import com.zpf.demo.user.service.UserExpendService;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 class UserController {
-    @Autowired
-    private RedisUtil redisUtil;
     @Autowired
     private UserBaseService userBaseService;
     @Autowired
