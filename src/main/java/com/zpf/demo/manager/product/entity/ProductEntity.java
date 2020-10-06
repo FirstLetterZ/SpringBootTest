@@ -14,7 +14,7 @@ import java.util.List;
 @TableName(value = "product_base", autoResultMap = true)
 public class ProductEntity {
     @TableId(type = IdType.INPUT)
-    private long id;
+    private String id;
     private String name;
     private String description;
     private BigDecimal originalPrice;
@@ -34,11 +34,15 @@ public class ProductEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date failureTime;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
     public void setId(long id) {
+        this.id = String.valueOf(id);
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 

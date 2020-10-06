@@ -52,7 +52,7 @@ public class TestApplication {
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        paginationInterceptor.setLimit(100);
+        paginationInterceptor.setLimit(1000);
         return paginationInterceptor;
     }
 

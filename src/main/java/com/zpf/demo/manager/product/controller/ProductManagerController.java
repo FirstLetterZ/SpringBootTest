@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 public class ProductManagerController {
@@ -23,10 +24,9 @@ public class ProductManagerController {
     private ProductManageService manageService;
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
-    public ResponseBean<Boolean> delProductInfo(ProductEntity info) {
-        ResponseBean<Boolean> result = new ResponseBean<>();
-        result.data = false;
-        if (info == null || info.getId() <= 0) {
+    public ResponseBean<ProductEntity> delProductInfo(@RequestBody ProductEntity info) {
+        ResponseBean<ProductEntity> result = new ResponseBean<>();
+        if (info == null || info.getId() == null) {
             result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
             return result;
         }
@@ -51,12 +51,22 @@ public class ProductManagerController {
             return result;
         }
         ProductEntity productEntity = new ProductEntity();
+        if (info.getSalePrice() != null && BigDecimal.ZERO.compareTo(info.getSalePrice()) < 0) {
+            if (info.getOriginalPrice().compareTo(info.getSalePrice()) >= 0) {
+                productEntity.setSalePrice(info.getSalePrice());
+            } else {
+                result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
+                result.msg = "售价不能大于原价";
+                return result;
+            }
+        }
         productEntity.setId(info.getId());
         productEntity.setName(info.getName());
         productEntity.setDescription(info.getDescription());
         productEntity.setDetailList(info.getDetailList());
         productEntity.setTopList(info.getTopList());
         productEntity.setOriginalPrice(info.getOriginalPrice());
+
         int handelResult = -1;
         try {
             QueryWrapper<ProductEntity> wrapper = new QueryWrapper<>();
@@ -68,16 +78,22 @@ public class ProductManagerController {
         if (handelResult <= 0) {
             result.setErrInfo(ErrorCode.UPDATE_FAIL);
         } else {
-            result.data = true;
+            result.data = productEntity;
         }
         return result;
     }
 
     @RequestMapping(value = "/delProduct", method = RequestMethod.POST)
-    public ResponseBean<Boolean> delProductInfo(Long id) {
+    public ResponseBean<Boolean> delProductInfo(@RequestBody Map<String, Object> param) {
         ResponseBean<Boolean> result = new ResponseBean<>();
         result.data = false;
-        if (id == null || id <= 0) {
+        String id = null;
+        try {
+            id = param.get("id").toString();
+        } catch (Exception e) {
+            //
+        }
+        if (StringUtils.isEmpty(id)) {
             result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
             return result;
         }
@@ -98,9 +114,8 @@ public class ProductManagerController {
     }
 
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public ResponseBean<Boolean> addProductInfo(@RequestBody ProductEntity info) {
-        ResponseBean<Boolean> result = new ResponseBean<>();
-        result.data = false;
+    public ResponseBean<ProductEntity> addProductInfo(@RequestBody ProductEntity info) {
+        ResponseBean<ProductEntity> result = new ResponseBean<>();
         if (info == null) {
             result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
             return result;
@@ -146,7 +161,7 @@ public class ProductManagerController {
             e.printStackTrace();
         }
         if (insertResult > 0) {
-            result.data = true;
+            result.data = productEntity;
         } else {
             result.setErrInfo(ErrorCode.SAVE_FAIL);
         }
@@ -176,9 +191,9 @@ public class ProductManagerController {
     }
 
     @RequestMapping(value = "/productDetail", method = RequestMethod.GET)
-    public ResponseBean<ProductEntity> queryProductDetail(@RequestParam long id) {
+    public ResponseBean<ProductEntity> queryProductDetail(@RequestParam String id) {
         ResponseBean<ProductEntity> result = new ResponseBean<>();
-        if (id > 0) {
+        if (!StringUtils.isEmpty(id)) {
             QueryWrapper<ProductEntity> wrapper = new QueryWrapper<>();
             wrapper.eq("id", id);
             try {
