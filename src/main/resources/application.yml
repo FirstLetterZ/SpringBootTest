@@ -24,6 +24,7 @@ spring:
 
 # mybatis-plus 配置内容
 mybatis-plus:
+  #（路径）
   configuration:
     map-underscore-to-camel-case: true # 虽然默认为 true ，但是还是显示去指定下。
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -34,3 +35,4 @@ mybatis-plus:
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   type-aliases-package:
     com.zpf.demo.user.entity,com.zpf.demo.manager.product.entity
+  type-handlers-package: com.zpf.demo.global.handler

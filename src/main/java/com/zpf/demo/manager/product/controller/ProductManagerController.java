@@ -5,16 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zpf.demo.global.ErrorCode;
 import com.zpf.demo.global.PageBean;
-import com.zpf.demo.manager.product.been.ProductInfo;
 import com.zpf.demo.manager.product.entity.ProductEntity;
 import com.zpf.demo.manager.product.service.ProductManageService;
 import com.zpf.demo.global.ResponseBean;
 import com.zpf.demo.tools.SnowflakeIdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -26,7 +23,7 @@ public class ProductManagerController {
     private ProductManageService manageService;
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
-    public ResponseBean<Boolean> delProductInfo(ProductInfo info) {
+    public ResponseBean<Boolean> delProductInfo(ProductEntity info) {
         ResponseBean<Boolean> result = new ResponseBean<>();
         result.data = false;
         if (info == null || info.getId() <= 0) {
@@ -41,14 +38,14 @@ public class ProductManagerController {
             result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
             return result;
         }
-//        if (info.getTopList() == null || info.getTopList().size() < 1) {
-//            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
-//            return result;
-//        }
-//        if (info.getDetailList() == null || info.getDetailList().size() < 1) {
-//            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
-//            return result;
-//        }
+        if (info.getTopList() == null || info.getTopList().size() < 1) {
+            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
+            return result;
+        }
+        if (info.getDetailList() == null || info.getDetailList().size() < 1) {
+            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
+            return result;
+        }
         if (info.getOriginalPrice() == null || BigDecimal.ZERO.compareTo(info.getOriginalPrice()) >= 0) {
             result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
             return result;
@@ -101,7 +98,7 @@ public class ProductManagerController {
     }
 
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public ResponseBean<Boolean> addProductInfo(@RequestBody ProductInfo info) {
+    public ResponseBean<Boolean> addProductInfo(@RequestBody ProductEntity info) {
         ResponseBean<Boolean> result = new ResponseBean<>();
         result.data = false;
         if (info == null) {
@@ -116,14 +113,14 @@ public class ProductManagerController {
             result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
             return result;
         }
-//        if (info.getTopList() == null || info.getTopList().size() < 1) {
-//            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
-//            return result;
-//        }
-//        if (info.getDetailList() == null || info.getDetailList().size() < 1) {
-//            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
-//            return result;
-//        }
+        if (info.getTopList() == null || info.getTopList().size() < 1) {
+            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
+            return result;
+        }
+        if (info.getDetailList() == null || info.getDetailList().size() < 1) {
+            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
+            return result;
+        }
         if (info.getOriginalPrice() == null || BigDecimal.ZERO.compareTo(info.getOriginalPrice()) >= 0) {
             result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
             return result;
@@ -178,6 +175,29 @@ public class ProductManagerController {
         return result;
     }
 
+    @RequestMapping(value = "/productDetail", method = RequestMethod.GET)
+    public ResponseBean<ProductEntity> queryProductDetail(@RequestParam long id) {
+        ResponseBean<ProductEntity> result = new ResponseBean<>();
+        if (id > 0) {
+            QueryWrapper<ProductEntity> wrapper = new QueryWrapper<>();
+            wrapper.eq("id", id);
+            try {
+                ProductEntity selectResult = manageService.getBaseMapper().selectOne(wrapper);
+                if (selectResult != null && !StringUtils.isEmpty(selectResult.getName())) {
+                    result.code = 200;
+                    result.data = selectResult;
+                } else {
+                    result.setErrInfo(ErrorCode.RESULT_EMPTY);
+                }
+            } catch (Exception e) {
+                result.setErrInfo(ErrorCode.QUERY_FAIL);
+                e.printStackTrace();
+            }
+        } else {
+            result.setErrInfo(ErrorCode.PARAMS_NO_ALLOWED);
+        }
+        return result;
+    }
 
     private Page<?> intPageInfo(HttpServletRequest request, Page<?> pageBean) {
         String pageNum = request.getParameter("pageNum");

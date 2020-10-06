@@ -1,15 +1,17 @@
 package com.zpf.demo.manager.product.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zpf.demo.global.handler.StringListTypeHandler;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@TableName(value = "product_base")
+@TableName(value = "product_base", autoResultMap = true)
 public class ProductEntity {
     @TableId(type = IdType.INPUT)
     private long id;
@@ -17,7 +19,9 @@ public class ProductEntity {
     private String description;
     private BigDecimal originalPrice;
     private BigDecimal salePrice;
+    @TableField(typeHandler = StringListTypeHandler.class)
     private List<String> topList;
+    @TableField(typeHandler = StringListTypeHandler.class)
     private List<String> detailList;
     private int state = 0;
     private String remark = null;//备注
