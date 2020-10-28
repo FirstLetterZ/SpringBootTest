@@ -23,7 +23,6 @@ public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
             throw new NullPointerException("Type argument cannot be null");
         }
         this.type = type;
-        System.out.println("JsonTypeHandler--type==" + type);
     }
 
 
@@ -49,7 +48,6 @@ public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
     }
 
     protected String toJsonString(Object parameter) {
-        System.out.println("JsonTypeHandler--toJsonString==>");
         try {
             return objectMapper.writeValueAsString(parameter);
         } catch (JsonProcessingException e) {
@@ -59,9 +57,6 @@ public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
     }
 
     protected T parse(String json) {
-        System.out.println("JsonTypeHandler--parse==>");
-        System.out.println("json==" + json);
-        System.out.println("type==" + type);
         try {
             return objectMapper.readValue(json, type);
         } catch (Exception e) {

@@ -5,17 +5,18 @@ import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
 
 import java.util.List;
+import java.util.Set;
 
 @MappedJdbcTypes(JdbcType.VARCHAR)
 @MappedTypes({List.class})
-public class StringListTypeHandler extends JsonTypeHandler<List<String>> {
+public class StringSetTypeHandler extends JsonTypeHandler<Set<String>> {
 
-    public StringListTypeHandler(Class<List<String>> type) {
+    public StringSetTypeHandler(Class<Set<String>> type) {
         super(type);
     }
 
     @Override
-    protected List<String> parse(String json) {
+    protected Set<String> parse(String json) {
         try {
             return objectMapper.readValue(json, type);
         } catch (Exception e) {

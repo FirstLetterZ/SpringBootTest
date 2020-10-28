@@ -14,18 +14,13 @@ public class UserBaseEntity {
     private String account = null;
     private String password = null;
     private String nickname = null;
-    private int sex = 0;
-    private int age = 0;
     private int accountState = 0;
+    private String role = null;
     private String remark = null;//备注
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date activeTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date freezingTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date failureTime;
+    private Date lastStateTime;
 
     public String getUsrId() {
         return usrId;
@@ -59,28 +54,20 @@ public class UserBaseEntity {
         this.nickname = nickname;
     }
 
-    public int getSex() {
-        return sex;
-    }
-
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public int getAccountState() {
         return accountState;
     }
 
     public void setAccountState(int accountState) {
         this.accountState = accountState;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getRemark() {
@@ -99,27 +86,11 @@ public class UserBaseEntity {
         this.createTime = createTime;
     }
 
-    public Date getActiveTime() {
-        return activeTime;
+    public Date getLastStateTime() {
+        return lastStateTime;
     }
 
-    public void setActiveTime(Date activeTime) {
-        this.activeTime = activeTime;
-    }
-
-    public Date getFreezingTime() {
-        return freezingTime;
-    }
-
-    public void setFreezingTime(Date freezingTime) {
-        this.freezingTime = freezingTime;
-    }
-
-    public Date getFailureTime() {
-        return failureTime;
-    }
-
-    public void setFailureTime(Date failureTime) {
-        this.failureTime = failureTime;
+    public void setLastStateTime(Date lastStateTime) {
+        this.lastStateTime = lastStateTime;
     }
 }

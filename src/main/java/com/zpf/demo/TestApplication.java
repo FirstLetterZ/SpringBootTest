@@ -4,13 +4,11 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.zpf.demo.user.filter.UserFilter;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.cors.CorsConfiguration;
@@ -49,6 +47,7 @@ public class TestApplication {
         return new CorsFilter(configSource);
     }
 
+    //分页插件
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
@@ -56,13 +55,14 @@ public class TestApplication {
         return paginationInterceptor;
     }
 
-    @Bean
-    public FilterRegistrationBean<UserFilter> userFilter() {
-        FilterRegistrationBean<UserFilter> registrationBean = new FilterRegistrationBean<UserFilter>();
-        registrationBean.setFilter(new UserFilter());
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<UserFilter> userFilter() {
+//        FilterRegistrationBean<UserFilter> registrationBean = new FilterRegistrationBean<UserFilter>();
+//        registrationBean.setFilter(new UserFilter());
+//        registrationBean.addUrlPatterns("/*");
+//        registrationBean.setOrder(1);
+//        return registrationBean;
+//    }
 
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(TestApplication.class);

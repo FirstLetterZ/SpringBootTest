@@ -10,6 +10,8 @@ public class UserExpendEntity {
     private String usrId = null;
     private String email = null;
     private String phone = null;
+    private int sex = 0;
+    private int age = 0;
     private String sdf = null;//个性签名
     private String other = null;
 
@@ -35,6 +37,22 @@ public class UserExpendEntity {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getSdf() {

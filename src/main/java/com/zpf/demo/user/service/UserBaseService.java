@@ -17,13 +17,15 @@ import java.util.UUID;
 @Service
 public class UserBaseService extends ServiceImpl<UserBaseRepository, UserBaseEntity> {
 
-    public UserBaseEntity findUserBaseInfo(String usrId) {
-        return baseMapper.selectById(usrId);
-    }
-
     public UserBaseEntity findUserBaseInfoByAccount(String account) {
         QueryWrapper<UserBaseEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account",account);
+        queryWrapper.eq("account", account);
+        return baseMapper.selectOne(queryWrapper);
+    }
+
+    public UserBaseEntity findUserBaseInfoById(String userId) {
+        QueryWrapper<UserBaseEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("usrId", userId);
         return baseMapper.selectOne(queryWrapper);
     }
 
