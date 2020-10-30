@@ -11,6 +11,7 @@ public class UserPersonalInfo {
     public String account = null;
     public String nickname = null;
     public int accountState = 0;
+    public String token = null;
     public String sexStr = null;
     public int sexType = 0;
     public int age = 0;
@@ -24,27 +25,31 @@ public class UserPersonalInfo {
     public Date lastStateTime;
 
     public void setBaseInfo(UserBaseEntity info) {
-        usrId = info.getUsrId();
-        account = info.getAccount();
-        nickname = info.getNickname();
-        remark = info.getRemark();
-        accountState = info.getAccountState();
-        createTime = info.getCreateTime();
-        lastStateTime = info.getLastStateTime();
+        if (info != null) {
+            usrId = info.getUsrId();
+            account = info.getAccount();
+            nickname = info.getNickname();
+            remark = info.getRemark();
+            accountState = info.getAccountState();
+            createTime = info.getCreateTime();
+            lastStateTime = info.getLastStateTime();
+        }
     }
 
     public void setExpandInfo(UserExpendEntity info) {
-        sexType = info.getSex();
-        if (sexType == 1) {
-            sexStr = "男";
-        } else if (sexType == 2) {
-            sexStr = "女";
-        } else {
-            sexStr = "保密";
+        if (info != null) {
+            sexType = info.getSex();
+            if (sexType == 1) {
+                sexStr = "男";
+            } else if (sexType == 2) {
+                sexStr = "女";
+            } else {
+                sexStr = "保密";
+            }
+            age = info.getAge();
+            email = info.getEmail();
+            phone = info.getPhone();
+            sdf = info.getSdf();
         }
-        age = info.getAge();
-        email = info.getEmail();
-        phone = info.getPhone();
-        sdf = info.getSdf();
     }
 }

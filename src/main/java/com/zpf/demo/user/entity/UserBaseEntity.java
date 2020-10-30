@@ -15,7 +15,7 @@ public class UserBaseEntity {
     private String password = null;
     private String nickname = null;
     private int accountState = 0;
-    private String role = null;
+    private String roleName = null;
     private String remark = null;//备注
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
@@ -62,12 +62,12 @@ public class UserBaseEntity {
         this.accountState = accountState;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleName(String role) {
+        this.roleName = role;
     }
 
     public String getRemark() {

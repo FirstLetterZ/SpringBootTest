@@ -25,7 +25,7 @@ public class UserBaseService extends ServiceImpl<UserBaseRepository, UserBaseEnt
 
     public UserBaseEntity findUserBaseInfoById(String userId) {
         QueryWrapper<UserBaseEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("usrId", userId);
+        queryWrapper.eq("usr_id", userId);
         return baseMapper.selectOne(queryWrapper);
     }
 

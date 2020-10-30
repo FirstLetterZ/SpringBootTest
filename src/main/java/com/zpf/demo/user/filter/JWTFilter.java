@@ -1,7 +1,8 @@
 package com.zpf.demo.user.filter;
 
 import com.zpf.demo.global.Constants;
-import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.BearerToken;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class JWTFilter extends BasicHttpAuthenticationFilter {
+    private BearerToken touristToken = new BearerToken(Constants.TOKEN_TOURIST);
 
-    //检查是否允许跳到Realm中认证用户信息和权限信息
+    //保持登录状态
     @Override
-    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws UnauthorizedException {
-        String tokenString = getAuthzHeader(request);
-        //没有有效token交给接口处理
-        return tokenString != null && tokenString.length() != 0;
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        boolean result;
+        try {
+            result = executeLogin(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
     }
+
 
     //修改认证字段，会对默认逻辑下生成UsernamePasswordToken产生影响，对应username
     @Override
@@ -44,5 +52,16 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             return false;
         }
         return super.preHandle(request, response);
+    }
+
+    //修改生成的token，默认逻辑下生成UsernamePasswordToken
+    @Override
+    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
+        String tokenString = getAuthzHeader(request);
+        if (tokenString == null || tokenString.length() == 0) {
+            return touristToken;
+        } else {
+            return new BearerToken(tokenString);
+        }
     }
 }

@@ -20,6 +20,8 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -29,36 +31,67 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
     private UserRoleService userRoleService;
+    private SimpleAuthorizationInfo authInfoNoLogin;
+    private SimpleAuthenticationInfo tokenAuthNoLogin;
+
+    //默认只支持UsernamePasswordToken，所以必须改变返回值
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return true;
+    }
+
+    @Override
+    protected void onInit() {
+        super.onInit();
+        //初始化游客信息
+        authInfoNoLogin = new SimpleAuthorizationInfo();
+        authInfoNoLogin.addRole("anon");
+        authInfoNoLogin.addStringPermission("anon");
+        SimplePrincipalCollection spcNoLogin = new SimplePrincipalCollection(Constants.TOKEN_TOURIST, this.getName());
+        UserBaseEntity userNoLogin = new UserBaseEntity();
+        userNoLogin.setRoleName("anon");
+        spcNoLogin.add(userNoLogin, this.getName());
+        tokenAuthNoLogin = new SimpleAuthenticationInfo(spcNoLogin, Constants.TOKEN_TOURIST);
+    }
 
     //获取权限
     //参数PrincipalCollection来源于doGetAuthenticationInfo返回的AuthenticationInfo,本demo内使用的是SimpleAuthenticationInfo，
     //所以对应其构造函数的第一个值
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        if (principalCollection == tokenAuthNoLogin.getPrincipals()) {
+            return authInfoNoLogin;
+        }
         UserBaseEntity userBase = principalCollection.oneByType(UserBaseEntity.class);
         if (userBase == null) {
-            throw new AuthenticationException("获取用户信息失败");
+            return authInfoNoLogin;
         }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        UserRoleEntity roleEntity = userRoleService.findRolePermission(userBase.getRole());
-        if (roleEntity == null || !roleEntity.isLegal()) {
-            throw new AuthenticationException("该用户没有任何权限");
+        UserRoleEntity roleEntity = userRoleService.findRolePermission(userBase.getRoleName());
+        if (roleEntity == null || !roleEntity.checkLegal()) {
+            info.addRole("anon");
+            info.addStringPermission("anon");
+        } else {
+            info.addRole(roleEntity.getRoleName());
+            List<String> pList = roleEntity.getPermissions();
+            if (pList == null || pList.size() == 0) {
+                info.setRoles(new HashSet<>());
+            } else {
+                info.setRoles(new HashSet<>(pList));
+            }
         }
-        info.addRole(roleEntity.getRoleName());
-        info.setRoles(roleEntity.getPermissions());
         return info;
     }
 
     //认证token
-    //默认生成UsernamePasswordToken
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String tokenString = null;
         if (authenticationToken != null && authenticationToken.getPrincipal() != null) {
             tokenString = authenticationToken.getPrincipal().toString();
         }
-        if (tokenString == null) {
-            throw new AuthenticationException("缺少有效token");
+        if (tokenString == null || tokenString.length() == 0 || tokenString.equals(Constants.TOKEN_TOURIST)) {//游客身份
+            return tokenAuthNoLogin;
         }
         SimplePrincipalCollection spc = new SimplePrincipalCollection();
         spc.add(tokenString, this.getName());
@@ -69,7 +102,7 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         String userId = null;
         try {
-            userId = tokenInfo.get(Constants.USER_ID).toString();
+            userId = tokenInfo.get(Constants.USER_ID).asString();
         } catch (Exception e) {
             e.printStackTrace();
         }

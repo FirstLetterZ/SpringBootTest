@@ -19,4 +19,8 @@ public class UserRegisterInfo {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean checkLegal() {
+        return account != null && account.length() > 0 && password != null && password.length() > 0;
+    }
 }
